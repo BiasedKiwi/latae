@@ -29,7 +29,7 @@ rp.get_sitemap(rb_file)
 import requests
 import robotspy as rp
 
-rb_file = requests.get("duckduckgo.com/robots.txt").text
+rb_file = requests.get("https://duckduckgo.com/robots.txt").text
 
 # Get disallowed paths in the form of a Dict
 rp.get_disallowed(rb_file)
