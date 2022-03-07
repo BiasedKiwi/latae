@@ -1,4 +1,7 @@
-def get_disallowed(robots_file: str) -> bool:
+from typing import Dict, List
+
+
+def get_disallowed(robots_file: str) -> Dict[str, List[str]]:
     """
     Check if a user agent is allowed to access a website.
     
