@@ -30,3 +30,26 @@ def get_disallowed(robots_file: str) -> Dict[str, List[str]]:
             continue
     
     return disallows
+
+
+def get_sitemap(robots_file: str) -> str:
+    """
+    Get the sitemap URL from a robots.txt file.
+    
+    ## Returns
+    
+    Returns the sitemap URL if found, otherwise returns an empty string.
+    
+    ## Examples:
+    >>> with open("robots.txt", "r") as f:
+            # robots.txt contents: "Sitemap: https://example.com/sitemap.xml"
+    ...     get_sitemap(f.readlines())  # Returns "https://example.com/sitemap.xml"
+    
+    ## Parameters:
+    `robots_file` (str): The contents of the robots.txt file to check.
+    """
+    for line in robots_file:
+        if line.startswith("Sitemap: "):
+            return line.replace("Sitemap: ", "").strip("\n")
+    
+    return ""
