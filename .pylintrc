@@ -1,1 +1,3 @@
-disable=trailing-whitespace
+[MESSAGES CONTROL]
+disable=
+    trailing-whitespace
