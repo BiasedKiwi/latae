@@ -1,19 +1,17 @@
-def get_disallowed(user_agent: str, robots_file: str) -> bool:
+def get_disallowed(robots_file: str) -> bool:
     """
     Check if a user agent is allowed to access a website.
     
     ## Returns
     
-    Returns a tuple containing all forbidden paths. Returns an empty tuple if the `Disallow` rule is not found or is set to `*`.
+    Returns a dictionnary containing all forbidden paths. Returns an empty tuple if the `Disallow` rule is not found or is set to `*`.
     
     ## Examples:
     >>> with open("robots.txt", "r") as f:
             # robots.txt contents: "User-Agent: *\n Disallow: /"
-    ...     is_allowed("*", f.readlines())
-            ("/")
+    ...     is_allowed("*", f.readlines())  # Returns {"*": ["/"]}
     
     ## Parameters:
-    `user_agent` (str): The user agent to check.
     `robots_file` (str): The contents of the robots.txt file to check.
     """
     disallows = {}
