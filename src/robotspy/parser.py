@@ -30,9 +30,3 @@ def get_disallowed(robots_file: str) -> Dict[str, List[str]]:
             continue
     
     return disallows
-
-
-if __name__ == "__main__":
-    with open("./robots.txt") as file:
-        robots_file = file.readlines()
-    print(get_disallowed("JoeBot", robots_file))
