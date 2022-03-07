@@ -54,3 +54,24 @@ def get_sitemap(robots_file: str) -> str:
             return line.replace("Sitemap: ", "").strip("\n")
     
     return ""
+
+def get_crawl_delay(robots_file: str) -> int:
+    """Returns the crawl delay if found, otherwise returns 0.
+    
+    ## Returns
+    
+    Returns the crawl delay if found, otherwise returns 0.
+    
+    ## Examples:
+    >>> with open("robots.txt", "r") as f:
+            # robots.txt contents: "crawl_delay: 5"
+    ...     get_crawl_delay(f.readlines())  # Returns 5
+        
+    ## Parameters:
+    `robots_file` (str): The contents of the robots.txt file to check.
+    """
+    for line in robots_file:
+        if line.startswith("Crawl-delay: "):
+            return int(line.replace("Crawl-delay: ", "").strip("\n"))
+    
+    return 0
