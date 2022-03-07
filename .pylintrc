@@ -1,3 +1,4 @@
 [MESSAGES CONTROL]
 disable=
-    trailing-whitespace
+    trailing-whitespace,
+    line-too-long

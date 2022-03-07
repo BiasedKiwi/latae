@@ -1,3 +1,4 @@
+"""All methods related to parsing"""
 from typing import Dict, List
 
 
