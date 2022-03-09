@@ -23,9 +23,11 @@ def get_disallowed(robots_file: str) -> Dict[str, List[str]]:
     
     for line in robots_file:
         if line.startswith("User-Agent: "):
+            line = line.partition("#")[0] # TODO: Implement a function to do this
             current_agent = line.replace("User-Agent: ", "").strip("\n")
             disallows[current_agent] = []
         elif line.startswith("Disallow: "):
+            line = line.partition("#")[0]  # TODO: Implement a function to do this
             disallows[current_agent].append(line.replace("Disallow: ", "").strip("\n"))
         else:
             continue
