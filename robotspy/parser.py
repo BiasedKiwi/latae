@@ -34,7 +34,7 @@ def get_disallowed(robots_file: TextIO) -> Dict[str, List[str]]:
     return disallows
 
 
-def get_sitemap(robots_file: str) -> str:
+def get_sitemap(robots_file: TextIO) -> str:
     """
     Get the sitemap URL from a robots.txt file.
 
@@ -48,16 +48,16 @@ def get_sitemap(robots_file: str) -> str:
     ...     get_sitemap(f.readlines())  # Returns "https://example.com/sitemap.xml"
 
     ## Parameters:
-    `robots_file` (str): The contents of the robots.txt file to check.
+    `robots_file` (TextIO): The contents of the robots.txt file to check.
     """
     for line in robots_file:
         if line.startswith("Sitemap: "):
             return line.replace("Sitemap: ", "").strip("\n")
 
-    return ""
+    return ""  # Return an empty string if the `Disallow` rule is not found
 
 
-def get_crawl_delay(robots_file: str) -> int:
+def get_crawl_delay(robots_file: TextIO) -> int:
     """
     Returns the crawl delay if found, otherwise returns 0.
 
@@ -71,13 +71,13 @@ def get_crawl_delay(robots_file: str) -> int:
     ...     get_crawl_delay(f.readlines())  # Returns 5
 
     ## Parameters:
-    `robots_file` (str): The contents of the robots.txt file to check.
+    `robots_file` (TextIO): The contents of the robots.txt file to check.
     """
     for line in robots_file:
         if line.startswith("Crawl-delay: "):
             return int(line.replace("Crawl-delay: ", "").strip("\n"))
 
-    return 0
+    return 0  # Returns 0 if the `Disallow` rule is not found
 
 
 def _trim_comments(robots_file: TextIO) -> List[str]:
@@ -101,8 +101,13 @@ def _trim_comments(robots_file: TextIO) -> List[str]:
     trimmed_full = r""
 
     for line in robots_file:  # Iterate over all lines
-        head, sep, tail = line.partition("#")  # Use the `partition` method to trim everything after the seperator, in this case `#`
-        head = head.strip("\n")  # A little bit of a hack but works to suppress the empty strings "" items in `trimmed_full`
-        trimmed_full += head + "\n"
+        without_comments = line.partition("#")[0]  # Use the `partition` method to trim everything after the seperator, in this case `#`
+        without_comments = without_comments.strip("\n")  # A little bit of a hack but works to suppress the empty strings "" items in `trimmed_full`
+        trimmed_full += without_comments + "\n"
 
     return trimmed_full.splitlines()
+
+with open("./robots.txt", "r") as robots_file:
+    print(get_disallowed(robots_file))
+    print(get_sitemap(robots_file))
+    print(get_crawl_delay(robots_file))
