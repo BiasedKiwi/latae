@@ -1,4 +1,5 @@
 [MESSAGES CONTROL]
 disable=
     trailing-whitespace,
-    line-too-long
+    line-too-long,
+    redefined-outer-name
