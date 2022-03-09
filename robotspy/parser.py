@@ -1,10 +1,10 @@
 """All methods related to parsing"""
-from typing import Dict, List
+from typing import Dict, List, TextIO
 
 
-def get_disallowed(robots_file: str) -> Dict[str, List[str]]:
+def get_disallowed(robots_file: TextIO) -> Dict[str, List[str]]:
     """
-    Check if a user agent is allowed to access a website.
+    Get all disallowed paths for a given robots.txt file
 
     ## Returns
 
@@ -80,7 +80,7 @@ def get_crawl_delay(robots_file: str) -> int:
     return 0
 
 
-def _trim_comments(robots_file: str) -> List[str]:
+def _trim_comments(robots_file: TextIO) -> List[str]:
     """
     Internal method to trim comments from a robots.txt file using the `partiton()` method.
     
@@ -88,14 +88,21 @@ def _trim_comments(robots_file: str) -> List[str]:
     
     Returns a list of the lines in `robots_file` without comments.
     
-    ## Parameters
+    ## Examples:
+    >>> with open("robots.txt", "r") as f:
+            # robots.txt contents: "User-Agent: * # This is a comment"
+            _trim_comments(f.readlines())  # Returns ["User-Agent: *"]
     
-    `robots_file` (str): The contents of the robots.txt file to check.
+    
+    ## Parameters:
+    
+    `robots_file` (TextIO): The contents of the robots.txt file to check.
     """
     trimmed_full = r""
 
     for line in robots_file:  # Iterate over all lines
         head, sep, tail = line.partition("#")  # Use the `partition` method to trim everything after the seperator, in this case `#`
+        head = head.strip("\n")  # A little bit of a hack but works to suppress the empty strings "" items in `trimmed_full`
         trimmed_full += head + "\n"
 
     return trimmed_full.splitlines()
