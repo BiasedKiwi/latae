@@ -24,10 +24,10 @@ def get_disallowed(robots_file: TextIO) -> Dict[str, List[str]]:
 
     for line in robots_file:
         if line.startswith("User-Agent: "):
-            current_agent = line.replace("User-Agent: ", "").strip("\n")
+            current_agent = line.replace("User-Agent: ", "")
             disallows[current_agent] = []
         elif line.startswith("Disallow: "):
-            disallows[current_agent].append(line.replace("Disallow: ", "").strip("\n"))
+            disallows[current_agent].append(line.replace("Disallow: ", ""))
         else:
             continue
 
@@ -50,9 +50,11 @@ def get_sitemap(robots_file: TextIO) -> str:
     ## Parameters:
     `robots_file` (TextIO): The contents of the robots.txt file to check.
     """
+    robots_file = _trim_comments(robots_file)  # Trim comments
+    
     for line in robots_file:
         if line.startswith("Sitemap: "):
-            return line.replace("Sitemap: ", "").strip("\n")
+            return line.replace("Sitemap: ", "")
 
     return ""  # Return an empty string if the `Disallow` rule is not found
 
@@ -73,9 +75,11 @@ def get_crawl_delay(robots_file: TextIO) -> int:
     ## Parameters:
     `robots_file` (TextIO): The contents of the robots.txt file to check.
     """
+    robots_file = _trim_comments(robots_file)  # Trim comments
+    
     for line in robots_file:
         if line.startswith("Crawl-delay: "):
-            return int(line.replace("Crawl-delay: ", "").strip("\n"))
+            return int(line.replace("Crawl-delay: ", ""))
 
     return 0  # Returns 0 if the `Disallow` rule is not found
 
