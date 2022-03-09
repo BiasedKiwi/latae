@@ -110,8 +110,3 @@ def _trim_comments(robots_file: TextIO) -> List[str]:
         trimmed_full += without_comments + "\n"
 
     return trimmed_full.splitlines()
-
-with open("./robots.txt", "r") as robots_file:
-    print(get_disallowed(robots_file))
-    print(get_sitemap(robots_file))
-    print(get_crawl_delay(robots_file))
