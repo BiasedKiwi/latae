@@ -3,3 +3,6 @@ disable=
     trailing-whitespace,
     line-too-long,
     redefined-outer-name
+
+[master]
+ignore-patterns=(.)*_test\.py,test_(.)*\.py
