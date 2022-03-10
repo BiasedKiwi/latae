@@ -1,0 +1,5 @@
+User-Agent: Test  # This is a comment
+Disallow: /  # Another comment!
+ # Execute order 66
+User-Agent: *  # Never gonna give you up
+Disallow: foo  # Never gonna let you down

@@ -79,8 +79,9 @@ def get_crawl_delay(robots_file: TextIO) -> int:
     robots_file = _trim_comments(robots_file)  # Trim comments
     
     for line in robots_file:
-        if line.startswith("Crawl-delay: "):
-            return int(line.replace("Crawl-delay: ", ""))
+        if line.startswith("Crawl-Delay: "):
+            delay = line.replace("Crawl-Delay: ", "")
+            return int(delay)
 
     return 0  # Returns 0 if the `Disallow` rule is not found
 

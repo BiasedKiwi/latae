@@ -1,0 +1,5 @@
+User-Agent: *
+Disallow: /
+
+Sitemap: https://foo.com/sitemap.xml
+Sitemap: https://bar.com/sitemap.xml

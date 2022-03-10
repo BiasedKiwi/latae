@@ -1,0 +1,2 @@
+User-Agent: * # This is a comment
+Disallow: / # This is a comment with a # sharp inside! 
