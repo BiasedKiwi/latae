@@ -1,6 +1,7 @@
 /.venv
 /.vscode
-/src/robots.py.egg-info
+*/robotspy.egg-info
 /dist
 /.pytest_cache
 __pycache__
+/.eggs
