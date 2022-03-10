@@ -108,6 +108,6 @@ def _trim_comments(robots_file: TextIO) -> List[str]:
     for line in robots_file:  # Iterate over all lines
         without_comments = line.partition("#")[0]  # Use the `partition` method to trim everything after the seperator, in this case `#`
         without_comments = without_comments.strip("\n")  # A little bit of a hack but works to suppress the empty strings "" items in `trimmed_full`
-        trimmed_full += without_comments + "\n"
+        trimmed_full += without_comments.rstrip() + "\n"  # Use `rstrip` to trim the whitespace at the end of the string.
 
     return trimmed_full.splitlines()
