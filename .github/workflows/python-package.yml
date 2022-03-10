@@ -30,6 +30,9 @@ jobs:
         python -m pip install --upgrade pip
         pip3 install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Install robotspy
+      run: |
+        python3 setup.py develop
     - name: Test with pytest
       run: |
         python3 -m pytest
