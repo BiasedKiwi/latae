@@ -1,5 +1,13 @@
 """All methods related to parsing"""
+
+import re
 from typing import Dict, List, TextIO
+
+
+__agt_replace_pattern = re.compile("user-agent: ", re.IGNORECASE)
+__dslw_replace_pattern = re.compile("disallow: ", re.IGNORECASE)
+__crawl_delay_pattern = re.compile("crawl-delay: ", re.IGNORECASE)
+__stmp_replace_pattern = re.compile("sitemap: ", re.IGNORECASE)
 
 
 def get_disallowed(robots_file: TextIO) -> Dict[str, List[str]]:
@@ -24,10 +32,10 @@ def get_disallowed(robots_file: TextIO) -> Dict[str, List[str]]:
 
     for line in robots_file:
         if line.startswith("User-Agent: "):
-            current_agent = line.replace("User-Agent: ", "")
+            current_agent = __agt_replace_pattern.sub("", line)
             disallows[current_agent] = []
         elif line.startswith("Disallow: "):
-            disallows[current_agent].append(line.replace("Disallow: ", ""))
+            disallows[current_agent].append(__dslw_replace_pattern.sub("", line))
         else:
             continue
 
@@ -52,10 +60,10 @@ def get_sitemap(robots_file: TextIO) -> List[str]:
     """
     robots_file = _trim_comments(robots_file)  # Trim comments
     sitemaps = []
-    
+
     for line in robots_file:  # Iterate through the file to find the Sitemap rule
         if line.startswith("Sitemap: "):
-            sitemaps.append(line.replace("Sitemap: ", ""))
+            sitemaps.append(__stmp_replace_pattern.sub("", line))
 
     return sitemaps
 
@@ -77,10 +85,10 @@ def get_crawl_delay(robots_file: TextIO) -> int:
     `robots_file` (TextIO): The contents of the robots.txt file to check.
     """
     robots_file = _trim_comments(robots_file)  # Trim comments
-    
+
     for line in robots_file:
         if line.startswith("Crawl-Delay: "):
-            delay = line.replace("Crawl-Delay: ", "")
+            delay = __crawl_delay_pattern.sub("", line)
             return int(delay)
 
     return 0  # Returns 0 if the `Disallow` rule is not found
@@ -89,26 +97,32 @@ def get_crawl_delay(robots_file: TextIO) -> int:
 def _trim_comments(robots_file: TextIO) -> List[str]:
     """
     Internal method to trim comments from a robots.txt file using the `partiton()` method.
-    
+
     ## Returns
-    
+
     Returns a list of the lines in `robots_file` without comments.
-    
+
     ## Examples:
     >>> with open("robots.txt", "r") as f:
             # robots.txt contents: "User-Agent: * # This is a comment"
             _trim_comments(f.readlines())  # Returns ["User-Agent: *"]
-    
-    
+
+
     ## Parameters:
-    
+
     `robots_file` (TextIO): The contents of the robots.txt file to check.
     """
     trimmed_full = r""
 
     for line in robots_file:  # Iterate over all lines
-        without_comments = line.partition("#")[0]  # Use the `partition` method to trim everything after the seperator, in this case `#`
-        without_comments = without_comments.strip("\n")  # A little bit of a hack but works to suppress the empty strings "" items in `trimmed_full`
-        trimmed_full += without_comments.rstrip() + "\n"  # Use `rstrip` to trim the whitespace at the end of the string.
+        without_comments = line.partition("#")[
+            0
+        ]  # Use the `partition` method to trim everything after the seperator, in this case `#`
+        without_comments = without_comments.strip(
+            "\n"
+        )  # A little bit of a hack but works to suppress the empty strings "" items in `trimmed_full`
+        trimmed_full += (
+            without_comments.rstrip() + "\n"
+        )  # Use `rstrip` to trim the whitespace at the end of the string.
 
     return trimmed_full.splitlines()
