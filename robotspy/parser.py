@@ -34,29 +34,30 @@ def get_disallowed(robots_file: TextIO) -> Dict[str, List[str]]:
     return disallows
 
 
-def get_sitemap(robots_file: TextIO) -> str:
+def get_sitemap(robots_file: TextIO) -> List[str]:
     """
-    Get the sitemap URL from a robots.txt file.
+    Get all the sitemap URLs specified in a given robots.txt file
 
     ## Returns
 
-    Returns the sitemap URL if found, otherwise returns an empty string.
+    Returns a list of all sitemap URls found in `robots_file`. Returns an empty list if no sitemap are found.
 
     ## Examples:
     >>> with open("robots.txt", "r") as f:
             # robots.txt contents: "Sitemap: https://example.com/sitemap.xml"
-    ...     get_sitemap(f.readlines())  # Returns "https://example.com/sitemap.xml"
+    ...     get_sitemap(f.readlines())  # Returns ["https://example.com/sitemap.xml"]
 
     ## Parameters:
     `robots_file` (TextIO): The contents of the robots.txt file to check.
     """
     robots_file = _trim_comments(robots_file)  # Trim comments
+    sitemaps = []
     
-    for line in robots_file:
+    for line in robots_file:  # Iterate through the file to find the Sitemap rule
         if line.startswith("Sitemap: "):
-            return line.replace("Sitemap: ", "")
+            sitemaps.append(line.replace("Sitemap: ", ""))
 
-    return ""  # Return an empty string if the `Disallow` rule is not found
+    return sitemaps
 
 
 def get_crawl_delay(robots_file: TextIO) -> int:
