@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="robotspy",
+    name="robots.py-shadawcraw",
     version="0.0.1",
     author="shadawcraw",
     description="A simple library to parse and read robots.txt files",
