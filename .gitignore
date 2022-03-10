@@ -1,6 +1,6 @@
 /.venv
 /.vscode
-*/robotspy.egg-info
+*/latae.egg-info
 /dist
 /.pytest_cache
 __pycache__
