@@ -1,16 +1,17 @@
 """All methods related to parsing"""
 
 import re
-from typing import Dict, List, TextIO
+from typing import Dict, List, TextIO, Union
 
 
 __agt_replace_pattern = re.compile("user-agent: ", re.IGNORECASE)
 __dslw_replace_pattern = re.compile("disallow: ", re.IGNORECASE)
 __crawl_delay_pattern = re.compile("crawl-delay: ", re.IGNORECASE)
 __stmp_replace_pattern = re.compile("sitemap: ", re.IGNORECASE)
+__host_replace_pattern = re.compile("host: ", re.IGNORECASE)
 
 
-def get_disallowed(robots_file: TextIO) -> Dict[str, List[str]]:
+def get_disallowed(robots_file: Union[TextIO, str]) -> Dict[str, List[str]]:
     """
     Get all disallowed paths for a given robots.txt file
 
@@ -42,7 +43,7 @@ def get_disallowed(robots_file: TextIO) -> Dict[str, List[str]]:
     return disallows
 
 
-def get_sitemap(robots_file: TextIO) -> List[str]:
+def get_sitemap(robots_file: Union[TextIO, str]) -> List[str]:
     """
     Get all the sitemap URLs specified in a given robots.txt file
 
@@ -68,7 +69,7 @@ def get_sitemap(robots_file: TextIO) -> List[str]:
     return sitemaps
 
 
-def get_crawl_delay(robots_file: TextIO) -> int:
+def get_crawl_delay(robots_file: Union[TextIO, str]) -> int:
     """
     Returns the crawl delay if found, otherwise returns 0.
 
@@ -94,7 +95,26 @@ def get_crawl_delay(robots_file: TextIO) -> int:
     return 0  # Returns 0 if the `Disallow` rule is not found
 
 
-def _trim_comments(robots_file: TextIO) -> List[str]:
+def get_host(robots_file: Union[TextIO, str]) -> str:
+    """
+    Returns the value of the `Host` directive if found, otherwise returns an empty string "".
+    
+    ## Examples:
+    >>> with open("robots.txt", "r") as f:
+        # robots.txt contents: "Host: example.com"
+    ... get_host(f.readlines())  # Returns "example.com"
+    """
+    robots_file = _trim_comments(robots_file)  # Trim comments
+    
+    for line in robots_file:
+        if line.lower().startswith("host: "):
+            host = __host_replace_pattern.sub("", line)
+            return host
+        
+    return ""
+
+
+def _trim_comments(robots_file: Union[TextIO, str]) -> List[str]:
     """
     Internal method to trim comments from a robots.txt file using the `partiton()` method.
 

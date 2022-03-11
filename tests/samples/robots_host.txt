@@ -1,0 +1,4 @@
+Host: example.com  # This should be retuned in the test
+hOst: foo.com  # This should not be returned in the test
+hoSt: bar.com # This should not be returned in the test
+hosT: baz.com # This should not be returned in the test

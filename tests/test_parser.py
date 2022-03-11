@@ -20,6 +20,13 @@ def test_get_disallowed_multiple_agents_comments():
         
     assert get_disallowed(robots) == {"Test": ["/"], "*": ["foo"]}
     
+    
+def test_get_disallowed_no_directive():
+    with open("./tests/samples/robots_no_directive.txt", "r") as f:
+        robots = f.readlines()
+        
+    assert get_disallowed(robots) == {}
+    
 def test_trim_comments():
     with open("./tests/samples/robots_comments.txt", "r") as f:
         robots = f.readlines()
@@ -32,6 +39,13 @@ def test_get_crawl_delay():
         
     assert get_crawl_delay(robots) == 5
     
+
+def test_get_crawl_delay_no_directive():
+    with open("./tests/samples/robots_no_directive.txt") as f:
+        robots = f.readlines()
+        
+    assert get_crawl_delay(robots) == 0
+    
 def test_get_sitemap():
     with open("./tests/samples/robots_sitemap.txt", "r") as f:
         robots = f.readlines()
@@ -43,3 +57,31 @@ def test_get_sitemap_multiple():
         robots = f.readlines()
 
     assert get_sitemap(robots) == ["https://foo.com/sitemap.xml", "https://bar.com/sitemap.xml"]
+    
+
+def test_get_sitemap_no_directive():
+    with open("./tests/samples/robots_sitemap_no_directive.txt", "r") as f:
+        robots = f.readlines()
+        
+    assert get_sitemap(robots) == []
+
+
+def test_get_host_normal_case():
+    with open("./tests/samples/robots_host.txt", "r") as f:
+        robots = f.readlines()
+
+    assert get_host(robots) == "example.com"
+    
+
+def test_get_host_no_case():
+    with open("./tests/samples/robots_host_case_insensitive.txt", "r") as f:
+        robots = f.readlines()
+        
+    assert get_host(robots) == "example.com"
+    
+    
+def test_get_host_no_directive():
+    with open("./tests/samples/robots_host_no_directive.txt", "r") as f:
+        robots = f.readlines()
+        
+    assert get_host(robots) == ""
