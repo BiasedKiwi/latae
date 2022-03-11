@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="latae",
-    version="0.0.1",
+    version="0.0.4",
     author="shadawcraw",
     description="A simple library to parse and read robots.txt files",
     long_description=long_description,
