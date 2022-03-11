@@ -36,3 +36,15 @@ jobs:
     - name: Test with pytest
       run: |
         python3 -m pytest
+    - name: Build package
+      run: |
+        python3 -m pip install --upgrade build
+        python3 -m build
+    - name: Upload wheel file
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        name: Wheel file
+        path: |
+          dist/*
+          !dist/.pytest_cache
+        
