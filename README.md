@@ -32,8 +32,8 @@ import latae as lt
 rb_file = requests.get("https://duckduckgo.com/robots.txt").text
 
 # Get disallowed paths in the form of a Dict
-lt.get_disallowed(rb_file)
+lt.get_disallowed(rb_file.splitlines())
 
 # Get the XML sitemap
-lt.get_sitemap(rb_file)
+lt.get_sitemap(rb_file.splitlines())
 ```
