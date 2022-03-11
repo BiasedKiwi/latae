@@ -31,10 +31,10 @@ def get_disallowed(robots_file: TextIO) -> Dict[str, List[str]]:
     robots_file = _trim_comments(robots_file)
 
     for line in robots_file:
-        if line.startswith("User-Agent: "):
+        if line.lower().startswith("user-agent: "):
             current_agent = __agt_replace_pattern.sub("", line)
             disallows[current_agent] = []
-        elif line.startswith("Disallow: "):
+        elif line.lower().startswith("disallow: "):
             disallows[current_agent].append(__dslw_replace_pattern.sub("", line))
         else:
             continue
@@ -62,7 +62,7 @@ def get_sitemap(robots_file: TextIO) -> List[str]:
     sitemaps = []
 
     for line in robots_file:  # Iterate through the file to find the Sitemap rule
-        if line.startswith("Sitemap: "):
+        if line.lower().startswith("sitemap: "):
             sitemaps.append(__stmp_replace_pattern.sub("", line))
 
     return sitemaps
@@ -87,7 +87,7 @@ def get_crawl_delay(robots_file: TextIO) -> int:
     robots_file = _trim_comments(robots_file)  # Trim comments
 
     for line in robots_file:
-        if line.startswith("Crawl-Delay: "):
+        if line.lower().startswith("crawl-delay: "):
             delay = __crawl_delay_pattern.sub("", line)
             return int(delay)
 
