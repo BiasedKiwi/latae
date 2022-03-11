@@ -5,4 +5,4 @@ disable=
     redefined-outer-name
 
 [master]
-ignore-patterns=(.)*_test\.py,test_(.)*\.py,\docs\conf.py
+ignore-patterns=(.)*_test\.py,test_(.)*\.py,conf.py
